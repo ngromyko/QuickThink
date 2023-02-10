@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "QuickThink: ChatGPT LinkedIn Assistant",
+  "description": "AI extension for LinkedIn that streamlines relevant, personalized responses, saving you time and increasing success on the platform",
+  "version": "0.2",
+  "permissions": ["storage"],
+  "host_permissions": ["https://www.linkedin.com/"],
+  "icons": { "128": "icons/icon128.png" },
+  "action": {
+    "default_icon": {
+      "128": "icons/icon128.png"
+    },
+    "default_popup": "popup/popup.html"
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": false
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["https://www.linkedin.com/messaging/*"],
+      "css": ["style.css"],
+      "js": ["main.js", "services.js"],
+      "run_at": "document_end"
+    }
+  ]
+}
