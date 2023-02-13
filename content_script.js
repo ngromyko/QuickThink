@@ -69,7 +69,7 @@ async function generateAnswers(lastMessage) {
   try {
     let model = await getModel();
 
-    let allData = await globalThis.generateResponse(
+    let allData = await globalThis.generateResponse2(
       lastMessage,
       180,
       OPTIONS_NUMBER,
@@ -83,14 +83,16 @@ async function generateAnswers(lastMessage) {
     const container = document.querySelector(".msg-s-message-list-container");
     container.appendChild(ul);
 
-    document.querySelector(".conversations-quick-replies")?.remove();
-    document
-      .querySelector(".msg-s-message-list__quick-replies-container")
-      ?.remove();
+    removeDefaultQuickReplies();
   } catch (error) {
     console.error(error);
     throw error;
   }
+}
+
+function removeDefaultQuickReplies() {
+  document.querySelector(".conversations-quick-replies")?.remove();
+  document.querySelector(".msg-s-message-list__quick-replies-container")?.remove();
 }
 
 async function getModel() {

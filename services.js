@@ -42,6 +42,4 @@ String.prototype.format = function () {
   });
 };
 
-
-
 globalThis.generateResponse = generateResponse;
