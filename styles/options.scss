@@ -1,0 +1,60 @@
+@import 'common.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 100px auto;
+  width: 600px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  font-weight: 500;
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #f5f5f5;
+  border: 1px solid gray;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+li:not(:last-child) {
+  margin-right: 20px;
+}
+.selected {
+  background-color: #2cb52c;
+  color: white;
+  font-weight: 500;
+}
+.description {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 14px;
+  color: #3f3e3e;
+  font-size: 16px;
+}
+
+input[type='range'] {
+  -webkit-appearance: none;
+  width: 200px;
+  height: 5px;
+  background-color: #ccc;
+  border-radius: 5px;
+  outline: none;
+  margin-top: 20px;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background-color: #333;
+  border-radius: 50%;
+  cursor: pointer;
+}
