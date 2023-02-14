@@ -5,7 +5,7 @@ import './string.extensions';
 const API_KEY = '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';
 const API_URL = 'https://api.openai.com/v1/completions';
 
-const TEMPLATE = `Chatting with a person on LinkedIn. Respond in a youthful, friendly, short, concise, non-formal way. Person: {0}. \n Answer:`;
+const TEMPLATE = `{0} Respond in a friendly, concise and informal manner. Person: {1}. \n Answer:`;
 
 const REPLY_BUTTON_NAME = 'AI Replies';
 const GENERAL_COLOR = '#2cb52c';
@@ -50,8 +50,18 @@ function handle(message: string) {
 
 function setupSendButton() {
   const sendBtn = document.querySelector('.msg-form__send-button');
-  sendBtn.addEventListener('click', async () => {
+  sendBtn?.addEventListener('click', () => {
     removeAnswersContainer();
+  });
+
+  const contentContainer = document.querySelector(
+    '.msg-form__msg-content-container',
+  );
+
+  contentContainer.addEventListener('keydown', (e: any) => {
+    if (e.key === 'Enter') {
+      removeAnswersContainer();
+    }
   });
 }
 
@@ -61,12 +71,17 @@ function removeAnswersContainer() {
 
 async function onClickReply(e: any, message: string) {
   try {
+    e.preventDefault();
+    e.stopPropagation();
+
     e.target.textContent = 'Loading';
     await generateAnswers(message);
     e.target.textContent = REPLY_BUTTON_NAME;
   } catch (error) {
     e.target.textContent = 'Try Again';
   }
+
+  return false;
 }
 
 function getActionBtnContainer() {
@@ -179,14 +194,14 @@ function getMessages() {
 }
 
 const generateResponse = async (
-  prompt: string,
+  message: string,
   max_tokens = 200,
   count = 1,
   model = 'text-davinci-003',
 ) => {
   try {
-    const formatedPromt = TEMPLATE.format(prompt);
-    console.log(formatedPromt);
+    const promt = await getStorageItem('prompt');
+    const formatedPromt = TEMPLATE.format(promt, message);
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
@@ -213,13 +228,3 @@ const generateResponse = async (
     throw new Error('An error occurred while generating the response');
   }
 };
-
-// String.prototype.format = function (args: any): string {
-//   return this.replace(/{([0-9]+)}/g, function (match: any, index: any) {
-//     return typeof args[index] == "undefined" ? match : args[index];
-//   });
-// };
-
-// String.prototype.trunc = function (n: number) :string {
-//     return this.substr(0, n - 1) + (this.length > n ? "&hellip;" : "");
-//   };

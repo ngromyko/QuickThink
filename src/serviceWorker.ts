@@ -1,12 +1,19 @@
-import { initializeStorageWithDefaults, SelectedOption } from './storage';
+import {
+  AppStorage,
+  initializeStorageWithDefaults,
+  SelectedOption,
+} from './storage';
 
 chrome.runtime.onInstalled.addListener(async () => {
   // Here goes everything you want to execute after extension initialization
 
-  const defaultStorageData = { selectedOption: SelectedOption.smartReplies };
+  const defaultStorageData: AppStorage = {
+    selectedOption: SelectedOption.smartReplies,
+    prompt: 'Chatting with a person on LinkedIn.',
+  };
   await initializeStorageWithDefaults(defaultStorageData);
 
-  const query = { url: "https://www.linkedin.com/*" };
+  const query = { url: 'https://www.linkedin.com/*' };
   chrome.tabs.query(query, refreshPage());
 });
 

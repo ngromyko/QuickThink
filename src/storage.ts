@@ -3,8 +3,9 @@ export enum SelectedOption {
   smartReplies,
 }
 
-export interface Storage {
+export interface AppStorage {
   selectedOption: SelectedOption;
+  prompt: string;
 }
 
 export function getStorageData(): Promise<Storage> {
@@ -60,7 +61,7 @@ export function setStorageItem<Key extends keyof Storage>(
   });
 }
 
-export async function initializeStorageWithDefaults(defaults: Storage) {
+export async function initializeStorageWithDefaults(defaults: AppStorage) {
   const currentStorageData = await getStorageData();
   const newStorageData = Object.assign({}, defaults, currentStorageData);
   await setStorageData(newStorageData);
