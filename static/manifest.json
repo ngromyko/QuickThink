@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "QuickThink: ChatGPT LinkedIn Assistant",
   "description": "AI extension for LinkedIn that streamlines relevant, personalized responses, saving you time and increasing success on the platform",
-  "version": "0.3",
+  "version": "0.4",
   "permissions": ["storage"],
   "host_permissions": ["https://www.linkedin.com/"],
   "icons": {
