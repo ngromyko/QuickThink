@@ -1,33 +1,42 @@
-import {
-  AppStorage,
-  initializeStorageWithDefaults,
-  SelectedOption,
-} from './storage';
+import { AppStorage, SelectedOption } from './models';
+import { initializeStorageWithDefaults } from './storage';
 
-chrome.runtime.onInstalled.addListener(async () => {
-  // Here goes everything you want to execute after extension initialization
+const CLEAR_ANSWERS_TITLE = 'Clear answers';
 
+chrome.runtime.onInstalled.addListener(async (details) => {
   const defaultStorageData: AppStorage = {
     selectedOption: SelectedOption.smartReplies,
-    prompt: 'Chatting with a person on LinkedIn.',
+    PROMT_SETTINGS: 'EMPTY',
   };
   await initializeStorageWithDefaults(defaultStorageData);
 
-  const query = { url: 'https://www.linkedin.com/*' };
-  chrome.tabs.query(query, refreshPage());
-});
+  const linkedInQuery = { url: 'https://www.linkedin.com/*' };
+  chrome.tabs.query(linkedInQuery, refreshPage);
 
-// Log storage changes, might be safely removed
-chrome.storage.onChanged.addListener((changes) => {
-  for (const [key, value] of Object.entries(changes)) {
-    console.log(
-      `"${key}" changed from "${value.oldValue}" to "${value.newValue}"`,
-    );
+  if (details.reason == chrome.runtime.OnInstalledReason.INSTALL) {
+    chrome.runtime.openOptionsPage();
   }
+
+  chrome.contextMenus.create({
+    id: '1',
+    title: CLEAR_ANSWERS_TITLE,
+    documentUrlPatterns: [linkedInQuery.url],
+  });
 });
 
-const refreshPage = () => {
-  return function (tabs: chrome.tabs.Tab[]) {
-    chrome.tabs.reload(tabs[0].id);
-  };
+const refreshPage = (tabs: chrome.tabs.Tab[]) => {
+  chrome.tabs.reload(tabs[0].id);
 };
+
+const clearAnswers = (tab: chrome.tabs.Tab) => {
+  chrome.scripting.executeScript({
+    target: {
+      tabId: tab.id,
+    },
+    func: () => document.getElementById('ul-answers')?.remove(),
+  });
+};
+
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+  clearAnswers(tab);
+});

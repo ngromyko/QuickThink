@@ -1,17 +1,14 @@
 import '../styles/content.scss';
-import { getStorageItem, SelectedOption } from './storage';
+import { Choice } from './models';
+import { generateResponse } from './services';
 import './string.extensions';
 
-const API_KEY = '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';
-const API_URL = 'https://api.openai.com/v1/completions';
-
-const TEMPLATE = `{0} Respond in a friendly, concise and informal manner. Person: {1}. \n Answer:`;
-
 const REPLY_BUTTON_NAME = 'AI Replies';
-const GENERAL_COLOR = '#2cb52c';
 const OPTIONS_NUMBER = 2;
 
 let locationPathName = '';
+
+checkTrigger();
 function checkTrigger() {
   const messages = getMessages();
 
@@ -24,8 +21,6 @@ function checkTrigger() {
 
   requestAnimationFrame(checkTrigger);
 }
-
-checkTrigger();
 
 function handle(message: string) {
   if (message) {
@@ -54,31 +49,25 @@ function setupSendButton() {
     removeAnswersContainer();
   });
 
-  const contentContainer = document.querySelector(
-    '.msg-form__msg-content-container',
-  );
+  const contentContainer = document.querySelector('.msg-form__msg-content-container');
 
-  contentContainer.addEventListener('keydown', (e: any) => {
-    if (e.key === 'Enter') {
+  contentContainer.addEventListener('keydown', (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
       removeAnswersContainer();
     }
   });
 }
 
-function removeAnswersContainer() {
-  document.getElementById('ul-answers')?.remove();
-}
-
-async function onClickReply(e: any, message: string) {
+async function onClickReply(event: any, message: string) {
   try {
-    e.preventDefault();
-    e.stopPropagation();
+    event.preventDefault();
+    event.stopPropagation();
 
-    e.target.textContent = 'Loading';
+    event.target.textContent = 'Loading';
     await generateAnswers(message);
-    e.target.textContent = REPLY_BUTTON_NAME;
+    event.target.textContent = REPLY_BUTTON_NAME;
   } catch (error) {
-    e.target.textContent = 'Try Again';
+    event.target.textContent = 'Try Again';
   }
 
   return false;
@@ -88,21 +77,13 @@ function getActionBtnContainer() {
   return document.querySelector('.msg-form__right-actions');
 }
 
-async function generateAnswers(lastMessage: any) {
+async function generateAnswers(lastMessage: string) {
   try {
-    const model = await getModel();
+    const answers: Choice[] = await generateResponse(lastMessage, 160, OPTIONS_NUMBER);
 
-    const allData = await generateResponse(
-      lastMessage,
-      180,
-      OPTIONS_NUMBER,
-      model,
-    );
-    // allData = [...new Set(allData)];
+    removeAnswersContainer();
 
-    document.getElementById('ul-answers')?.remove();
-
-    const ul = createUl(allData);
+    const ul = createUl(answers);
     const container = document.querySelector('.msg-s-message-list-container');
     container.appendChild(ul);
 
@@ -115,29 +96,15 @@ async function generateAnswers(lastMessage: any) {
 
 function removeDefaultQuickReplies() {
   document.querySelector('.conversations-quick-replies')?.remove();
-  document
-    .querySelector('.msg-s-message-list__quick-replies-container')
-    ?.remove();
+  document.querySelector('.msg-s-message-list__quick-replies-container')?.remove();
 }
 
-async function getModel() {
-  let model = 'text-davinci-003';
-  const selectedOption: SelectedOption = await getStorageItem('selectedOption');
-  if (selectedOption == SelectedOption.quickReplies) {
-    model = 'text-curie-001';
-  }
-
-  return model;
-}
-
-function createUl(answers: string[]) {
+function createUl(answers: Choice[]) {
   const ul = document.createElement('ul');
   ul.id = 'ul-answers';
-  ul.style.marginBottom = '5px';
-  ul.style.marginTop = '5px';
 
   answers.forEach((answer) => {
-    const newListItem = createLiElement(answer);
+    const newListItem = createLiElement(answer.text);
 
     ul.appendChild(newListItem);
   });
@@ -165,12 +132,10 @@ function createAnswerButton(answer: string) {
   button.className = 'answer-button';
 
   button.addEventListener('click', () => {
-    document.querySelector('.msg-form__contenteditable p').textContent = answer;
+    const input = document.querySelector('.msg-form__contenteditable');
+    input.querySelector('p').textContent = answer;
 
-    const textArea = document.querySelector('.msg-form__contenteditable');
-    textArea.dispatchEvent(
-      new InputEvent('input', { data: answer, bubbles: true }),
-    );
+    input.dispatchEvent(new InputEvent('input', { data: answer, bubbles: true }));
   });
   return button;
 }
@@ -179,52 +144,15 @@ function createReplyButton() {
   const button = document.createElement('button');
   button.id = 'IdRetrieveLastMessage';
   button.className = 'artdeco-button artdeco-button--1';
-  button.style.marginRight = '5px';
-  button.style.backgroundColor = GENERAL_COLOR;
-
   button.textContent = REPLY_BUTTON_NAME;
 
   return button;
 }
 
 function getMessages() {
-  return Array.from(
-    document.querySelectorAll('.msg-s-event-listitem__body'),
-  ).map((msg) => msg.textContent);
+  return Array.from(document.querySelectorAll('.msg-s-event-listitem__body')).map((msg) => msg.textContent);
 }
 
-const generateResponse = async (
-  message: string,
-  max_tokens = 200,
-  count = 1,
-  model = 'text-davinci-003',
-) => {
-  try {
-    const promt = await getStorageItem('prompt');
-    const formatedPromt = TEMPLATE.format(promt, message);
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: model,
-        prompt: formatedPromt,
-        temperature: 0.5,
-        max_tokens: max_tokens,
-        top_p: 0.9,
-        frequency_penalty: 0.5,
-        presence_penalty: 0.5,
-        best_of: 3,
-        n: count,
-        stop: ['Recruiter:', 'Answer:'],
-      }),
-    });
-    const json = await response.json();
-    return json.choices.map((x: any) => x.text);
-  } catch (error) {
-    console.error(error);
-    throw new Error('An error occurred while generating the response');
-  }
-};
+function removeAnswersContainer() {
+  document.getElementById('ul-answers')?.remove();
+}

@@ -1,23 +1,34 @@
 import '../styles/options.scss';
-import { SelectedOption, setStorageItem, getStorageItem } from './storage';
+import { PROMT_SETTINGS, SelectedOption } from './models';
+import { getStorageItem, setStorageItem } from './storage';
 
-// Get the options elements
 const quickReplies = document.getElementById('quickReplies');
 const smartReplies = document.getElementById('smartReplies');
+const textarea: HTMLTextAreaElement = document.getElementById('textarea') as HTMLTextAreaElement;
 
-loaded();
-
-async function loaded() {
+(async function load() {
   const selectedOption: SelectedOption = await getStorageItem('selectedOption');
 
   if (selectedOption === SelectedOption.quickReplies) {
     quickReplies.className = 'selected';
-    smartReplies.className = '';
+    smartReplies.removeAttribute('class');
   } else {
-    quickReplies.className = '';
+    quickReplies.removeAttribute('class');
     smartReplies.className = 'selected';
   }
-}
+
+  textarea.value = (await getStorageItem(PROMT_SETTINGS)) ?? '';
+})();
+
+textarea.addEventListener('input', async (event: Event) => {
+  let value = (event.target as HTMLInputElement).value.trim();
+
+  if (!value) {
+    value = 'EMPTY';
+  }
+
+  setStorageItem(PROMT_SETTINGS, value);
+});
 
 quickReplies.addEventListener('click', async () => {
   quickReplies.classList.add('selected');

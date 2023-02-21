@@ -2,7 +2,10 @@
   "semi": true,
   "singleQuote": true,
   "trailingComma": "all",
-  "printWidth": 80,
+  "printWidth": 120,
   "endOfLine": "auto",
-  "tabWidth": 2
+  "tabWidth": 2,
+  "importOrder": ["^components/(.*)$", "^[./]" ],
+    "importOrderSeparation": true, 
+    "importOrderSortSpecifiers": true 
 }

@@ -1,12 +1,4 @@
-export enum SelectedOption {
-  quickReplies,
-  smartReplies,
-}
-
-export interface AppStorage {
-  selectedOption: SelectedOption;
-  prompt: string;
-}
+import { AppStorage } from './models';
 
 export function getStorageData(): Promise<Storage> {
   return new Promise((resolve, reject) => {
@@ -32,9 +24,7 @@ export function setStorageData(data: Storage): Promise<void> {
   });
 }
 
-export function getStorageItem<Key extends keyof Storage>(
-  key: Key,
-): Promise<Storage[Key]> {
+export function getStorageItem<Key extends keyof Storage>(key: Key): Promise<Storage[Key]> {
   return new Promise((resolve, reject) => {
     chrome.storage.sync.get([key], (result) => {
       if (chrome.runtime.lastError) {
@@ -46,10 +36,7 @@ export function getStorageItem<Key extends keyof Storage>(
   });
 }
 
-export function setStorageItem<Key extends keyof Storage>(
-  key: Key,
-  value: Storage[Key],
-): Promise<void> {
+export function setStorageItem<Key extends keyof Storage>(key: Key, value: Storage[Key]): Promise<void> {
   return new Promise((resolve, reject) => {
     chrome.storage.sync.set({ [key]: value }, () => {
       if (chrome.runtime.lastError) {

@@ -4,8 +4,7 @@ interface String {
 }
 
 String.prototype.format = function (...args): string {
-  //const args = rest;
-  return this.replace(/{(\d+)}/g, function (match: any, number: any) {
+  return this.replace(/{(\d+)}/g, function (match: any, number: number) {
     return typeof args[number] != 'undefined' ? args[number] : match;
   });
 };
