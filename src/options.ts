@@ -20,12 +20,8 @@ const textarea: HTMLTextAreaElement = document.getElementById('textarea') as HTM
   textarea.value = (await getStorageItem(PROMT_SETTINGS)) ?? '';
 })();
 
-textarea.addEventListener('input', async (event: Event) => {
-  let value = (event.target as HTMLInputElement).value.trim();
-
-  if (!value) {
-    value = 'EMPTY';
-  }
+textarea.addEventListener('input', (event: Event) => {
+  const value = (event.target as HTMLInputElement).value.trim();
 
   setStorageItem(PROMT_SETTINGS, value);
 });

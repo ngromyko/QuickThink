@@ -6,7 +6,7 @@ const CLEAR_ANSWERS_TITLE = 'Clear answers';
 chrome.runtime.onInstalled.addListener(async (details) => {
   const defaultStorageData: AppStorage = {
     selectedOption: SelectedOption.smartReplies,
-    PROMT_SETTINGS: 'EMPTY',
+    PROMT_SETTINGS: '',
   };
   await initializeStorageWithDefaults(defaultStorageData);
 

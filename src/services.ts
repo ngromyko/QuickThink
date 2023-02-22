@@ -8,7 +8,7 @@ const TEMPLATE = `Chatting with a Person on LinkedIn. Respond in a friendly, sho
 
 export const generateResponse = async (message: string, max_tokens = 200, answersCount = 1): Promise<Choice[]> => {
   try {
-    const promt = await getStorageItem(PROMT_SETTINGS);
+    const promt = (await getStorageItem(PROMT_SETTINGS)) ?? 'Empty';
     const formatedPromt = TEMPLATE.format(promt, message);
     const response = await fetch(API_URL, {
       method: 'POST',
