@@ -1,11 +1,21 @@
-//@import 'common.scss';
+@import 'common.scss';
+
+$black-color: #1f1f1f;
+
+html,
+body {
+  height: 100vh;
+  margin: 0;
+}
 
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 100px auto;
+  justify-content: space-between;
+  margin: 0px auto;
   width: 500px;
+  height: 100%;
 }
 
 .settings {
@@ -13,24 +23,25 @@
   display: flex;
   justify-content: space-between;
 
-  div {
+  button {
+    all: unset;
     width: 100%;
     font-weight: 500;
     padding: 10px 20px;
     background-color: #f5f5f5;
-    border: 1px solid gray;
+    border: 1px solid #ccc;
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
     font-size: 14px;
-  }
 
-  div:not(:last-child) {
-    margin-right: 20px;
+    &:not(:last-child) {
+      margin-right: 20px;
+    }
   }
 
   .selected {
-    background-color: #2cb52c;
+    background-color: $general-color;
     color: white;
     font-weight: 500;
   }
@@ -40,27 +51,8 @@
   margin-bottom: 30px;
   text-align: center;
   font-size: 14px;
-  color: #3f3e3e;
+  color: $black-color;
   font-size: 16px;
-}
-
-input[type='range'] {
-  -webkit-appearance: none;
-  width: 200px;
-  height: 5px;
-  background-color: #ccc;
-  border-radius: 5px;
-  outline: none;
-  margin-top: 20px;
-}
-
-input[type='range']::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
-  background-color: #333;
-  border-radius: 50%;
-  cursor: pointer;
 }
 
 .textarea-container {
@@ -81,5 +73,37 @@ input[type='range']::-webkit-slider-thumb {
 }
 
 .support-container {
-  margin-top: 150px;
+  font-weight: 300;
+  font-size: 14px;
+  margin-bottom: 10px;
+
+  code {
+    font-size: 12px;
+  }
+
+  .contact {
+    width: 100%;
+    text-align: justify;
+  }
+}
+
+.slider {
+  width: 100%;
+  //padding-left: 40px;
+  //align-items: center;
+}
+
+.slider label {
+  font-size: 16px;
+  font-weight: 500;
+  // font-family: Open Sans;
+  // padding-left: 10px;
+  color: $black-color;
+}
+.slider input[type='range'] {
+  width: 100%;
+  height: 2px;
+  background: black;
+  border: none;
+  outline: none;
 }

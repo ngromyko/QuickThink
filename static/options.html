@@ -8,37 +8,46 @@
   </head>
   <body>
     <div class="container">
-      <div class="description">
-        <b>Quick Replies</b> provide fast answers, while <b>Smart Replies</b> offer more intelligent responses but take
-        longer.
-      </div>
-      <div class="settings">
-        <div id="smartReplies" class="selected">Smart Replies</div>
-        <div id="quickReplies">Quick Replies</div>
-      </div>
-
-      <div>
-        <!-- <div style="display: flex; justify-content: space-between; flex-direction: column"> -->
+      <div style="margin-top: 100px">
+        <div class="description">
+          <b>Smart Replies</b> offer more intelligent responses but take longer. while <b>Quick Replies</b> provide fast
+          answers
+        </div>
+        <div class="settings">
+          <button id="smartReplies" class="selected">Smart Replies</button>
+          <button id="quickReplies">Quick Replies</button>
+        </div>
         <div class="textarea-container">
           <textarea
             id="textarea"
             placeholder="You can specify additional settings that will be used to generate the response."
           ></textarea>
         </div>
-        <div class="support-container">
-          <p>
-            My extension is currently available for free, but if you find it useful and would like to support our my, i
-            gratefully accept cryptocurrency donations in TON, ETH, and BTC.
-          </p>
-          <ul style="padding-left: 15px">
-            <li><strong>TON:</strong> <code>EQByqfmBYQqho7ITMUYhA1nNjLz5UYo7NRS4IP4n4cOdPuiz</code></li>
-            <li><strong>ETH:</strong> <code>0x846C3387d370f523b9B7F8a6e1789fAAf4ABf64f</code></li>
-            <li><strong>BTC:</strong> <code>bc1q9d4ywqf77xu0psprfn3uecmmc59uupc707wysz</code></li>
-          </ul>
-          <p>
-            If you have any questions or suggestions, please feel free to contact me at
-            <a href="mailto:n.gromyko99@gmail.com">n.gromyko99@gmail.com</a>.
-          </p>
+      </div>
+
+      <div class="slider">
+        <label id="number-of-answers" for="fader">Number of answers:</label>
+        <input type="range" min="1" max="4" value="1" id="fader" step="1" list="volsettings" />
+        <datalist id="volsettings">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+        </datalist>
+      </div>
+      <div class="support-container">
+        <p>
+          My extension is currently available for free, but if you find it useful and would like to support our my, i
+          gratefully accept cryptocurrency donations in TON, ETH, and BTC.
+        </p>
+        <ul style="padding-left: 15px">
+          <li><strong>TON:</strong> <code>EQByqfmBYQqho7ITMUYhA1nNjLz5UYo7NRS4IP4n4cOdPuiz</code></li>
+          <li><strong>ETH:</strong> <code>0x846C3387d370f523b9B7F8a6e1789fAAf4ABf64f</code></li>
+          <li><strong>BTC:</strong> <code>bc1q9d4ywqf77xu0psprfn3uecmmc59uupc707wysz</code></li>
+        </ul>
+        <div class="contact">
+          If you have any questions or suggestions, please feel free to contact me at
+          <a href="mailto:n.gromyko99@gmail.com">n.gromyko99@gmail.com</a>
         </div>
       </div>
 

@@ -1,29 +1,28 @@
 import '../styles/content.scss';
-import { Choice } from './models';
-import { generateResponse } from './services';
+import { Choice, Info } from './models';
+import { generateResponse } from './services/api';
+import { getInfo } from './services/info';
 import './string.extensions';
 
 const REPLY_BUTTON_NAME = 'AI Replies';
-const OPTIONS_NUMBER = 2;
 
 let locationPathName = '';
 
 checkTrigger();
 function checkTrigger() {
-  const messages = getMessages();
+  const info = getInfo();
 
-  if (locationPathName !== window.location.pathname && messages.length > 0) {
+  if (locationPathName !== window.location.pathname && info && info.message?.length > 0) {
     locationPathName = window.location.pathname;
 
-    const lastMessage = messages.slice(-1).toString().replace(/\s+/g, ' ');
-    handle(lastMessage);
+    handle(info);
   }
 
   requestAnimationFrame(checkTrigger);
 }
 
-function handle(message: string) {
-  if (message) {
+function handle(info: Info) {
+  if (info) {
     removeAnswersContainer();
 
     const actionsButtonContainer = getActionBtnContainer();
@@ -31,7 +30,7 @@ function handle(message: string) {
     const replyBtn = createReplyButton();
 
     replyBtn.addEventListener('click', async (e) => {
-      await onClickReply(e, message);
+      await onClickReply(e, info);
     });
 
     setupSendButton();
@@ -58,13 +57,13 @@ function setupSendButton() {
   });
 }
 
-async function onClickReply(event: any, message: string) {
+async function onClickReply(event: any, info: Info) {
   try {
     event.preventDefault();
     event.stopPropagation();
 
     event.target.textContent = 'Loading';
-    await generateAnswers(message);
+    await generateAnswers(info);
     event.target.textContent = REPLY_BUTTON_NAME;
   } catch (error) {
     event.target.textContent = 'Try Again';
@@ -77,11 +76,10 @@ function getActionBtnContainer() {
   return document.querySelector('.msg-form__right-actions');
 }
 
-async function generateAnswers(lastMessage: string) {
+async function generateAnswers(info: Info) {
   try {
-    const answers: Choice[] = await generateResponse(lastMessage, 160, OPTIONS_NUMBER);
-
     removeAnswersContainer();
+    const answers: Choice[] = await generateResponse(info);
 
     const ul = createUl(answers);
     const container = document.querySelector('.msg-s-message-list-container');
@@ -120,7 +118,7 @@ function createLiElement(answer: string) {
 
   // Create a span element
   const span = document.createElement('span');
-  span.innerHTML = answer.trunc(150);
+  span.innerHTML = answer.trunc(130);
 
   button.appendChild(span);
   newListItem.appendChild(button);
@@ -147,10 +145,6 @@ function createReplyButton() {
   button.textContent = REPLY_BUTTON_NAME;
 
   return button;
-}
-
-function getMessages() {
-  return Array.from(document.querySelectorAll('.msg-s-event-listitem__body')).map((msg) => msg.textContent);
 }
 
 function removeAnswersContainer() {

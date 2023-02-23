@@ -7,6 +7,7 @@ chrome.runtime.onInstalled.addListener(async (details) => {
   const defaultStorageData: AppStorage = {
     selectedOption: SelectedOption.smartReplies,
     PROMT_SETTINGS: '',
+    ANSWERS_NUMBER_SETTINGS: 1
   };
   await initializeStorageWithDefaults(defaultStorageData);
 
@@ -20,6 +21,11 @@ chrome.runtime.onInstalled.addListener(async (details) => {
   chrome.contextMenus.create({
     id: '1',
     title: CLEAR_ANSWERS_TITLE,
+    documentUrlPatterns: [linkedInQuery.url],
+  });
+  chrome.contextMenus.create({
+    id: '2',
+    title: 'Options',
     documentUrlPatterns: [linkedInQuery.url],
   });
 });
@@ -38,5 +44,11 @@ const clearAnswers = (tab: chrome.tabs.Tab) => {
 };
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-  clearAnswers(tab);
+  if (info.menuItemId == '1') {
+    clearAnswers(tab);
+  }
+
+  if (info.menuItemId == '2') {
+    chrome.runtime.openOptionsPage();
+  }
 });
