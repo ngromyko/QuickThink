@@ -33,12 +33,12 @@ function createParams(settings: Settings) {
     body: JSON.stringify({
       model: settings.model,
       prompt: settings.promt,
-      temperature: 1,
+      temperature: 0.5,
       max_tokens: settings.max_tokens,
       // top_p: 0.9,
       frequency_penalty: 0.5,
       presence_penalty: 0.5,
-      best_of: 6,
+      //best_of: 6,
       n: settings.answersCount,
     }),
   };

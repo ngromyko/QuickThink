@@ -1,5 +1,5 @@
 import '../styles/content.scss';
-import { Choice, Info } from './models';
+import { Choice } from './models';
 import { generateResponse } from './services/api';
 import { getInfo } from './services/info';
 import './string.extensions';
@@ -10,64 +10,70 @@ let locationPathName = '';
 
 checkTrigger();
 function checkTrigger() {
-  const info = getInfo();
+  modifyOriginalSendButton();
 
-  if (locationPathName !== window.location.pathname && info && info.message?.length > 0) {
-    locationPathName = window.location.pathname;
+  if (locationPathName !== window.location.pathname) {
+    const other = document.querySelector('.msg-s-event-listitem--other');
 
-    handle(info);
+    removeAnswersContainer();
+    document.getElementById('IdRetrieveLastMessage')?.remove();
+
+    if (other) {
+      locationPathName = window.location.pathname;
+      handle();
+    } else {
+      locationPathName = '';
+    }
   }
 
   requestAnimationFrame(checkTrigger);
 }
 
-function handle(info: Info) {
-  if (info) {
-    removeAnswersContainer();
+function handle() {
+  const replyBtn = createReplyButton();
+  const div = document.createElement('div');
+  div.appendChild(replyBtn);
 
-    const actionsButtonContainer = getActionBtnContainer();
-    document.getElementById('IdRetrieveLastMessage')?.remove();
-    const replyBtn = createReplyButton();
+  const actionsButtonContainer = getActionBtnContainer();
+  actionsButtonContainer.prepend(div);
+}
 
-    replyBtn.addEventListener('click', async (e) => {
-      await onClickReply(e, info);
+function modifyOriginalSendButton() {
+  const sendBtn = document.querySelector('.msg-form__send-button');
+
+  if (sendBtn) {
+    sendBtn.addEventListener('click', () => {
+      removeAnswersContainer();
     });
+  } else {
+    const contentContainer = document.querySelector('.msg-form__msg-content-container');
+    contentContainer?.addEventListener('keydown', (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        const input = document.querySelector('.msg-form__contenteditable');
 
-    setupSendButton();
-
-    const div = document.createElement('div');
-    div.appendChild(replyBtn);
-
-    actionsButtonContainer.prepend(div);
+        if (input && input.textContent.trim()) {
+          removeAnswersContainer();
+        }
+      }
+    });
   }
 }
 
-function setupSendButton() {
-  const sendBtn = document.querySelector('.msg-form__send-button');
-  sendBtn?.addEventListener('click', () => {
-    removeAnswersContainer();
-  });
+async function onClickReply(event: Event) {
+  const target = event.target as HTMLButtonElement;
 
-  const contentContainer = document.querySelector('.msg-form__msg-content-container');
-
-  contentContainer.addEventListener('keydown', (event: KeyboardEvent) => {
-    if (event.key === 'Enter') {
-      removeAnswersContainer();
-    }
-  });
-}
-
-async function onClickReply(event: any, info: Info) {
   try {
     event.preventDefault();
     event.stopPropagation();
 
-    event.target.textContent = 'Loading';
-    await generateAnswers(info);
-    event.target.textContent = REPLY_BUTTON_NAME;
+    target.textContent = 'Loading';
+    target.disabled = true;
+    await generateAnswers();
+    target.textContent = REPLY_BUTTON_NAME;
   } catch (error) {
-    event.target.textContent = 'Try Again';
+    target.textContent = 'Try Again';
   }
+  target.disabled = false;
 
   return false;
 }
@@ -76,16 +82,24 @@ function getActionBtnContainer() {
   return document.querySelector('.msg-form__right-actions');
 }
 
-async function generateAnswers(info: Info) {
+async function generateAnswers() {
   try {
     removeAnswersContainer();
-    const answers: Choice[] = await generateResponse(info);
+    const info = getInfo();
 
-    const ul = createUl(answers);
-    const container = document.querySelector('.msg-s-message-list-container');
-    container.appendChild(ul);
+    if (info) {
+      const captureLocation = locationPathName;
+      const answers: Choice[] = await generateResponse(info);
+      const uniqueTexts = filterUnique(answers, 'text');
 
-    removeDefaultQuickReplies();
+      if (locationPathName === captureLocation) {
+        const ul = createUl(uniqueTexts);
+        const container = document.querySelector('.msg-s-message-list-container');
+        container.appendChild(ul);
+      }
+
+      removeDefaultQuickReplies();
+    }
   } catch (error) {
     console.error(error);
     throw error;
@@ -144,9 +158,28 @@ function createReplyButton() {
   button.className = 'artdeco-button artdeco-button--1';
   button.textContent = REPLY_BUTTON_NAME;
 
+  button.addEventListener('click', async (event) => {
+    await onClickReply(event);
+  });
+
   return button;
 }
 
 function removeAnswersContainer() {
   document.getElementById('ul-answers')?.remove();
+}
+
+function filterUnique<T>(arr: T[], key: keyof T): T[] {
+  const uniqueItems: T[] = [];
+  const lowercaseKeys = new Set<string>();
+
+  for (const item of arr) {
+    const lowercaseKey = String(item[key]).toLowerCase();
+    if (!lowercaseKeys.has(lowercaseKey)) {
+      uniqueItems.push(item);
+      lowercaseKeys.add(lowercaseKey);
+    }
+  }
+
+  return uniqueItems;
 }

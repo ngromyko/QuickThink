@@ -16,6 +16,10 @@
 #IdRetrieveLastMessage {
   margin-right: 5px;
   background-color: $general-color;
+
+  &:disabled {
+    color: white;
+  }
 }
 
 #ul-answers {
