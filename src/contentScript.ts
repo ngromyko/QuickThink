@@ -4,7 +4,7 @@ import { generateResponse } from './services/api';
 import { getInfo } from './services/info';
 import './string.extensions';
 
-const REPLY_BUTTON_NAME = 'AI Replies';
+const REPLY_BUTTON_NAME = 'AI Reply';
 
 let locationPathName = '';
 
@@ -16,7 +16,7 @@ function checkTrigger() {
     const other = document.querySelector('.msg-s-event-listitem--other');
 
     removeAnswersContainer();
-    document.getElementById('IdRetrieveLastMessage')?.remove();
+    document.getElementById('custom-btn-container')?.remove();
 
     if (other) {
       locationPathName = window.location.pathname;
@@ -30,9 +30,19 @@ function checkTrigger() {
 }
 
 function handle() {
-  const replyBtn = createReplyButton();
   const div = document.createElement('div');
+  div.id = 'custom-btn-container';
+  div.className = 'with-clean';
+
+  const replyBtn = createReplyButton(div);
+  const cleanButton = createCleanButton();
+
+  cleanButton.addEventListener('click', () => {
+    removeAnswersContainer();
+  });
+
   div.appendChild(replyBtn);
+  div.appendChild(cleanButton);
 
   const actionsButtonContainer = getActionBtnContainer();
   actionsButtonContainer.prepend(div);
@@ -152,14 +162,33 @@ function createAnswerButton(answer: string) {
   return button;
 }
 
-function createReplyButton() {
+function createReplyButton(contaner: HTMLElement) {
   const button = document.createElement('button');
-  button.id = 'IdRetrieveLastMessage';
+  button.id = 'ai-reply-btn';
   button.className = 'artdeco-button artdeco-button--1';
   button.textContent = REPLY_BUTTON_NAME;
 
   button.addEventListener('click', async (event) => {
+    const cleanButton = document.getElementById('clean-button') as HTMLButtonElement;
+
+    cleanButton.disabled = true;
     await onClickReply(event);
+
+    cleanButton.disabled = false;
+  });
+
+  return button;
+}
+
+function createCleanButton() {
+  const button = document.createElement('button');
+  button.id = 'clean-button';
+  button.className = 'artdeco-button artdeco-button--1';
+  button.textContent = 'clean';
+  button.disabled = true;
+
+  button.addEventListener('click', async (event) => {
+    removeAnswersContainer();
   });
 
   return button;

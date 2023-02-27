@@ -13,13 +13,47 @@
   padding-bottom: 4px;
 }
 
-#IdRetrieveLastMessage {
+#custom-btn-container {
   margin-right: 5px;
+}
+
+@media screen and (max-width: 1200px) {
+  #clean-button,
+  #ai-reply-btn {
+    font-size: 12px;
+  }
+}
+
+.with-clean {
+  #ai-reply-btn {
+    border-radius: 1.6rem 0px 0px 1.6rem !important;
+    margin-right: 1px;
+    padding-right: 0.5rem !important;
+  }
+
+  #clean-button {
+    display: inline;
+  }
+}
+
+#ai-reply-btn {
   background-color: $general-color;
+
+  border-radius: 1.6rem;
 
   &:disabled {
     color: white;
   }
+}
+
+#clean-button {
+  display: none;
+  background-color: black;
+  color: white;
+  border-radius: 0px 1.6rem 1.6rem 0px !important;
+  margin-right: 1px;
+  padding-left: 0.5rem !important;
+  padding-right: 0.6rem !important;
 }
 
 #ul-answers {
