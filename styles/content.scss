@@ -17,6 +17,12 @@
   margin-right: 5px;
 }
 
+.msg-overlay-conversation-bubble__content-wrapper {
+  #custom-btn-container {
+    display: none;
+  }
+}
+
 #clean-button,
 #ai-reply-btn {
   @media screen and (max-width: 1200px) {
