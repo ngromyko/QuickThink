@@ -17,10 +17,14 @@
   margin-right: 5px;
 }
 
-@media screen and (max-width: 1200px) {
-  #clean-button,
-  #ai-reply-btn {
+#clean-button,
+#ai-reply-btn {
+  @media screen and (max-width: 1200px) {
     font-size: 12px;
+  }
+
+  @media screen and (max-width: 990px) {
+    padding: 0 2px 0 3px !important;
   }
 }
 

@@ -1,8 +1,6 @@
 import { AppStorage, SelectedOption } from './models';
 import { initializeStorageWithDefaults } from './storage';
 
-const CLEAR_ANSWERS_TITLE = 'Clear answers';
-
 chrome.runtime.onInstalled.addListener(async (details) => {
   const defaultStorageData: AppStorage = {
     selectedOption: SelectedOption.smartReplies,
@@ -18,11 +16,6 @@ chrome.runtime.onInstalled.addListener(async (details) => {
     chrome.runtime.openOptionsPage();
   }
 
-  // chrome.contextMenus.create({
-  //   id: '1',
-  //   title: CLEAR_ANSWERS_TITLE,
-  //   documentUrlPatterns: [linkedInQuery.url],
-  // });
   chrome.contextMenus.create({
     id: '2',
     title: 'Options',

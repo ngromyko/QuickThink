@@ -1,7 +1,6 @@
 import { ANSWERS_NUMBER_SETTINGS, Choice, Info, PROMT_SETTINGS, SelectedOption, TEMPLATE } from '../models';
 import { getStorageItem } from '../storage';
 
-const API_KEY = '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';
 const API_URL = 'https://api.openai.com/v1/completions';
 
 interface Settings {
@@ -28,7 +27,7 @@ function createParams(settings: Settings) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${API_KEY}`,
+      Authorization: `Bearer ${process.env.API_KEY}`,
     },
     body: JSON.stringify({
       model: settings.model,

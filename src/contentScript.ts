@@ -34,7 +34,7 @@ function handle() {
   div.id = 'custom-btn-container';
   div.className = 'with-clean';
 
-  const replyBtn = createReplyButton(div);
+  const replyBtn = createReplyButton();
   const cleanButton = createCleanButton();
 
   cleanButton.addEventListener('click', () => {
@@ -162,7 +162,7 @@ function createAnswerButton(answer: string) {
   return button;
 }
 
-function createReplyButton(contaner: HTMLElement) {
+function createReplyButton() {
   const button = document.createElement('button');
   button.id = 'ai-reply-btn';
   button.className = 'artdeco-button artdeco-button--1';
@@ -187,7 +187,7 @@ function createCleanButton() {
   button.textContent = 'clean';
   button.disabled = true;
 
-  button.addEventListener('click', async (event) => {
+  button.addEventListener('click', async () => {
     removeAnswersContainer();
   });
 
