@@ -8,25 +8,15 @@
   </head>
   <body>
     <div class="container">
-      <div style="margin-top: 50px">
-        <div class="description">
-          <b>Smart Replies</b> offer more intelligent responses but take longer. while <b>Quick Replies</b> provide fast
-          answers
-        </div>
-        <div class="settings">
-          <button id="smartReplies" class="selected">Smart Replies</button>
-          <button id="quickReplies">Quick Replies</button>
-        </div>
+      <div style="margin-top: 70px">
         <div class="textarea-container">
-          <textarea
-            id="textarea"
-            placeholder="You can specify additional settings that will be used to generate the response."
-          ></textarea>
+          <label for="textarea">You can specify additional settings that will be used to generate the response.</label>
+          <textarea id="textarea" placeholder="For example: respond friendly and shortly"></textarea>
         </div>
       </div>
 
       <div class="slider">
-        <label id="number-of-answers" for="fader">Number of answers:</label>
+        <label id="number-of-answers" for="fader"></label>
         <input type="range" min="1" max="4" value="1" id="fader" step="1" list="volsettings" />
         <datalist id="volsettings">
           <option>1</option>
