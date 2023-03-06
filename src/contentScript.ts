@@ -100,7 +100,6 @@ async function generateAnswers() {
     if (info) {
       const captureLocation = locationPathName;
       const answers: Choice[] = await generateResponse(info);
-      //  const uniqueTexts = filterUnique(answers, 'message');
 
       if (locationPathName === captureLocation) {
         const ul = createUl(answers);
@@ -196,19 +195,4 @@ function createCleanButton() {
 
 function removeAnswersContainer() {
   document.getElementById('ul-answers')?.remove();
-}
-
-function filterUnique<T>(arr: T[], key: keyof T): T[] {
-  const uniqueItems: T[] = [];
-  const lowercaseKeys = new Set<string>();
-
-  for (const item of arr) {
-    const lowercaseKey = String(item[key]).toLowerCase();
-    if (!lowercaseKeys.has(lowercaseKey)) {
-      uniqueItems.push(item);
-      lowercaseKeys.add(lowercaseKey);
-    }
-  }
-
-  return uniqueItems;
 }
