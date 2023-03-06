@@ -100,10 +100,9 @@ async function generateAnswers() {
     if (info) {
       const captureLocation = locationPathName;
       const answers: Choice[] = await generateResponse(info);
-      const uniqueTexts = filterUnique(answers, 'text');
 
       if (locationPathName === captureLocation) {
-        const ul = createUl(uniqueTexts);
+        const ul = createUl(answers);
         const container = document.querySelector('.msg-s-message-list-container');
         container.appendChild(ul);
       }
@@ -126,7 +125,7 @@ function createUl(answers: Choice[]) {
   ul.id = 'ul-answers';
 
   answers.forEach((answer) => {
-    const newListItem = createLiElement(answer.text);
+    const newListItem = createLiElement(answer.message.content);
 
     ul.appendChild(newListItem);
   });
@@ -196,19 +195,4 @@ function createCleanButton() {
 
 function removeAnswersContainer() {
   document.getElementById('ul-answers')?.remove();
-}
-
-function filterUnique<T>(arr: T[], key: keyof T): T[] {
-  const uniqueItems: T[] = [];
-  const lowercaseKeys = new Set<string>();
-
-  for (const item of arr) {
-    const lowercaseKey = String(item[key]).toLowerCase();
-    if (!lowercaseKeys.has(lowercaseKey)) {
-      uniqueItems.push(item);
-      lowercaseKeys.add(lowercaseKey);
-    }
-  }
-
-  return uniqueItems;
 }

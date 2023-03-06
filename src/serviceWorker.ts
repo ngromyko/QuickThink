@@ -18,7 +18,7 @@ chrome.runtime.onInstalled.addListener(async (details) => {
 
   chrome.contextMenus.create({
     id: '2',
-    title: 'Options',
+    title: 'QuickThink Options',
     documentUrlPatterns: [linkedInQuery.url],
   });
 });
