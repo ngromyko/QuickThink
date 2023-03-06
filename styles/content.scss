@@ -23,14 +23,17 @@
   }
 }
 
-#clean-button,
-#ai-reply-btn {
+.msg-form__hint-text {
   @media screen and (max-width: 1200px) {
-    font-size: 12px;
+    width: 50px;
   }
 
   @media screen and (max-width: 990px) {
-    padding: 0 2px 0 3px !important;
+    width: unset;
+  }
+
+  @media screen and (max-width: 730px) {
+    width: 50px;
   }
 }
 
@@ -39,10 +42,18 @@
     border-radius: 1.6rem 0px 0px 1.6rem !important;
     margin-right: 1px;
     padding-right: 0.5rem !important;
+
+    @media screen and (max-width: 1200px) {
+      font-size: 12px;
+      padding-right: 0.2rem !important;
+      padding-left: 0.5rem !important;
+    }
   }
 
   #clean-button {
-    display: inline;
+    @media screen and (max-width: 1200px) {
+      font-size: 12px;
+    }
   }
 }
 
@@ -54,16 +65,22 @@
   &:disabled {
     color: white;
   }
+  &:hover {
+    background-color: #1f821f;
+  }
 }
 
 #clean-button {
-  display: none;
   background-color: black;
   color: white;
   border-radius: 0px 1.6rem 1.6rem 0px !important;
   margin-right: 1px;
   padding-left: 0.5rem !important;
   padding-right: 0.6rem !important;
+
+  &:hover {
+    background-color: #262626;
+  }
 }
 
 #ul-answers {
