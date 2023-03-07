@@ -19,7 +19,7 @@ export const generateResponse = async (info: Info): Promise<Choice[]> => {
       temperature: 0.5,
       max_tokens: settings.max_tokens,
       n: settings.answersCount,
-      user: info.name,
+      user: info.interlocutorName,
     });
 
     return response.data.choices as Choice[];
@@ -40,7 +40,7 @@ const getMessages = (info: Info, settings: Settings) => {
       role: ChatCompletionRequestMessageRoleEnum.System,
       content: settings.promt,
     },
-    { role: ChatCompletionRequestMessageRoleEnum.User, content: info.message },
+    ...info.messages,
   ];
 
   return messages;

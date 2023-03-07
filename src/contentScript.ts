@@ -1,7 +1,9 @@
 import '../styles/content.scss';
-import { Choice } from './models';
+import { ANSWERS_NUMBER_SETTINGS, Choice } from './models';
 import { generateResponse } from './services/api';
-import { getInfo } from './services/info';
+import { extractMessageDataFromList } from './services/info';
+import { addSendButtonListener } from './services/messageForm';
+import { getStorageItem } from './storage';
 import './string.extensions';
 
 const REPLY_BUTTON_NAME = 'AI Reply';
@@ -10,17 +12,15 @@ let locationPathName = '';
 
 checkTrigger();
 function checkTrigger() {
-  modifyOriginalSendButton();
+  addSendButtonListener();
 
   if (locationPathName !== window.location.pathname) {
-    const other = document.querySelector('.msg-s-event-listitem--other');
-
     removeAnswersContainer();
     document.getElementById('custom-btn-container')?.remove();
 
-    if (other) {
+    if (getActionBtnContainer()) {
       locationPathName = window.location.pathname;
-      handle();
+      setup();
     } else {
       locationPathName = '';
     }
@@ -29,7 +29,7 @@ function checkTrigger() {
   requestAnimationFrame(checkTrigger);
 }
 
-function handle() {
+function setup() {
   const div = document.createElement('div');
   div.id = 'custom-btn-container';
   div.className = 'with-clean';
@@ -46,27 +46,6 @@ function handle() {
 
   const actionsButtonContainer = getActionBtnContainer();
   actionsButtonContainer.prepend(div);
-}
-
-function modifyOriginalSendButton() {
-  const sendBtn = document.querySelector('.msg-form__send-button');
-
-  if (sendBtn) {
-    sendBtn.addEventListener('click', () => {
-      removeAnswersContainer();
-    });
-  } else {
-    const contentContainer = document.querySelector('.msg-form__msg-content-container');
-    contentContainer?.addEventListener('keydown', (event: KeyboardEvent) => {
-      if (event.key === 'Enter') {
-        const input = document.querySelector('.msg-form__contenteditable');
-
-        if (input && input.textContent.trim()) {
-          removeAnswersContainer();
-        }
-      }
-    });
-  }
 }
 
 async function onClickReply(event: Event) {
@@ -95,14 +74,19 @@ function getActionBtnContainer() {
 async function generateAnswers() {
   try {
     removeAnswersContainer();
-    const info = getInfo();
 
-    if (info) {
+    const messageElement = document.querySelector('.msg-s-message-list-content') as HTMLUListElement;
+    const messageData = extractMessageDataFromList(messageElement);
+    console.log(messageData);
+
+    if (messageData && messageData.length) {
       const captureLocation = locationPathName;
-      const answers: Choice[] = await generateResponse(info);
+      const intelacotr = document.getElementById('thread-detail-jump-target')?.textContent.trim();
+
+      const answers: Choice[] = await generateResponse({ messages: messageData, interlocutorName: intelacotr });
 
       if (locationPathName === captureLocation) {
-        const ul = createUl(answers);
+        const ul = await createUl(answers);
         const container = document.querySelector('.msg-s-message-list-container');
         container.appendChild(ul);
       }
@@ -120,12 +104,14 @@ function removeDefaultQuickReplies() {
   document.querySelector('.msg-s-message-list__quick-replies-container')?.remove();
 }
 
-function createUl(answers: Choice[]) {
+async function createUl(answers: Choice[]) {
   const ul = document.createElement('ul');
   ul.id = 'ul-answers';
 
+  const answersCountSetting: number = await getStorageItem(ANSWERS_NUMBER_SETTINGS);
+
   answers.forEach((answer) => {
-    const newListItem = createLiElement(answer.message.content);
+    const newListItem = createLiElement(answer.message.content, answersCountSetting);
 
     ul.appendChild(newListItem);
   });
@@ -133,7 +119,7 @@ function createUl(answers: Choice[]) {
   return ul;
 }
 
-function createLiElement(answer: string) {
+function createLiElement(answer: string, answersCountSetting: number) {
   const newListItem = document.createElement('li');
   newListItem.style.margin = '8px';
 
@@ -141,7 +127,12 @@ function createLiElement(answer: string) {
 
   // Create a span element
   const span = document.createElement('span');
-  span.innerHTML = answer.trunc(130);
+
+  if (answersCountSetting > 1) {
+    span.innerHTML = answer.trunc(130);
+  } else {
+    span.innerHTML = answer;
+  }
 
   button.appendChild(span);
   newListItem.appendChild(button);

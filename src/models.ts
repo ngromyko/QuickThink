@@ -1,30 +1,23 @@
-import { ChatCompletionResponseMessage } from 'openai';
+import { ChatCompletionRequestMessage, ChatCompletionResponseMessage } from 'openai';
 
 export const PROMT_SETTINGS = 'PROMT_SETTINGS';
 export const ANSWERS_NUMBER_SETTINGS = 'ANSWERS_NUMBER_SETTINGS';
 
 export const TEMPLATE =
-  'The following is business conversation dialogue. Answer in the first person.. Lets think step by step. Generate respond in a friendly, shortly and informal manner. {additionalInfo}. Name of the interlocutor: {name}';
+  'The following is business conversation dialogue. Work and career theme. Generate first-person responses. Lets think step by step. Generate respond in a friendly and shortly. {additionalInfo}. Name of the interlocutor: {interlocutorName}';
 
 export interface Choice {
   message: ChatCompletionResponseMessage;
 }
 
-export enum SelectedOption {
-  quickReplies,
-  smartReplies,
-}
-
 export interface AppStorage {
-  selectedOption: SelectedOption;
   [PROMT_SETTINGS]: string;
   [ANSWERS_NUMBER_SETTINGS]: number;
 }
 
 export interface Info {
-  name: string;
-  message: string;
-  days?: number;
+  interlocutorName: string;
+  messages: Message[];
 }
 
 export interface Settings {
@@ -33,3 +26,6 @@ export interface Settings {
   answersCount: number;
   promt: string;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface Message extends ChatCompletionRequestMessage {}

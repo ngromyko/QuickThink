@@ -1,15 +1,23 @@
-import { Info } from '../models';
+import { Message } from '../models';
 
-export const getInfo = (): Info => {
-  const lastOtherMsgBlock = Array.from(document.querySelectorAll('.msg-s-event-listitem--other')).slice(-1)[0];
-  const nameElement = document.getElementById('thread-detail-jump-target');
+export function extractMessageDataFromList(ulElement: HTMLUListElement): Message[] {
+  const listItems: Message[] = [];
 
-  if (lastOtherMsgBlock && nameElement) {
-    const lastMessage = lastOtherMsgBlock.querySelector('.msg-s-event-listitem__body').textContent.trim();
-    const name = nameElement.textContent.trim();
+  const liElements = ulElement.querySelectorAll('li');
 
-    return { message: lastMessage, name: name };
-  }
+  liElements.forEach((liElement) => {
+    const messageElement = liElement.querySelector('.msg-s-event-listitem');
+    if (messageElement) {
+      const contentElement = messageElement.querySelector('.msg-s-event-listitem__body');
+      const isOther = messageElement.classList.contains('msg-s-event-listitem--other');
+      const role = isOther ? 'user' : 'assistant';
 
-  return null;
-};
+      if (contentElement) {
+        const content = contentElement.textContent.trim();
+        listItems.push({ content, role });
+      }
+    }
+  });
+
+  return listItems;
+}
