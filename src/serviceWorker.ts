@@ -1,9 +1,8 @@
-import { AppStorage, SelectedOption } from './models';
+import { AppStorage } from './models';
 import { initializeStorageWithDefaults } from './storage';
 
 chrome.runtime.onInstalled.addListener(async (details) => {
   const defaultStorageData: AppStorage = {
-    selectedOption: SelectedOption.smartReplies,
     PROMT_SETTINGS: '',
     ANSWERS_NUMBER_SETTINGS: 1,
   };

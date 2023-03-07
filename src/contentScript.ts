@@ -72,30 +72,25 @@ function getActionBtnContainer() {
 }
 
 async function generateAnswers() {
-  try {
-    removeAnswersContainer();
+  removeAnswersContainer();
 
-    const messageElement = document.querySelector('.msg-s-message-list-content') as HTMLUListElement;
-    const messageData = extractMessageDataFromList(messageElement);
-    console.log(messageData);
+  const messageElement = document.querySelector('.msg-s-message-list-content') as HTMLUListElement;
+  const messageData = extractMessageDataFromList(messageElement);
+  console.log(messageData);
 
-    if (messageData && messageData.length) {
-      const captureLocation = locationPathName;
-      const intelacotr = document.getElementById('thread-detail-jump-target')?.textContent.trim();
+  if (messageData && messageData.length) {
+    const captureLocation = locationPathName;
+    const intelacotr = document.getElementById('thread-detail-jump-target')?.textContent.trim();
 
-      const answers: Choice[] = await generateResponse({ messages: messageData, interlocutorName: intelacotr });
+    const answers: Choice[] = await generateResponse({ messages: messageData, interlocutorName: intelacotr });
 
-      if (locationPathName === captureLocation) {
-        const ul = await createUl(answers);
-        const container = document.querySelector('.msg-s-message-list-container');
-        container.appendChild(ul);
-      }
-
-      removeDefaultQuickReplies();
+    if (locationPathName === captureLocation) {
+      const ul = await createUl(answers);
+      const container = document.querySelector('.msg-s-message-list-container');
+      container.appendChild(ul);
     }
-  } catch (error) {
-    console.error(error);
-    throw error;
+
+    removeDefaultQuickReplies();
   }
 }
 
