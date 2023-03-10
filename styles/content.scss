@@ -1,0 +1,89 @@
+@import 'common.scss';
+
+.answer-button {
+  width: 100%;
+  border-radius: 1.6rem;
+  color: $general-color;
+  box-shadow: 0 0 0 1px $general-color;
+  font-size: 14px;
+  font-weight: 500;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#custom-btn-container {
+  margin-right: 5px;
+}
+
+.msg-overlay-conversation-bubble__content-wrapper {
+  #custom-btn-container {
+    display: none;
+  }
+}
+
+.msg-form__hint-text {
+  @media screen and (max-width: 1200px) {
+    width: 50px;
+  }
+
+  @media screen and (max-width: 990px) {
+    width: unset;
+  }
+
+  @media screen and (max-width: 730px) {
+    width: 50px;
+  }
+}
+
+.with-clean {
+  #ai-reply-btn {
+    border-radius: 1.6rem 0px 0px 1.6rem !important;
+    margin-right: 1px;
+    padding-right: 0.5rem !important;
+
+    @media screen and (max-width: 1200px) {
+      font-size: 12px;
+      padding-right: 0.2rem !important;
+      padding-left: 0.5rem !important;
+    }
+  }
+
+  #clean-button {
+    @media screen and (max-width: 1200px) {
+      font-size: 12px;
+    }
+  }
+}
+
+#ai-reply-btn {
+  background-color: $general-color;
+
+  border-radius: 1.6rem;
+
+  &:disabled {
+    color: white;
+  }
+  &:hover {
+    background-color: #1f821f;
+  }
+}
+
+#clean-button {
+  background-color: black;
+  color: white;
+  border-radius: 0px 1.6rem 1.6rem 0px !important;
+  margin-right: 1px;
+  padding-left: 0.5rem !important;
+  padding-right: 0.6rem !important;
+
+  &:hover {
+    background-color: #262626;
+  }
+}
+
+#ul-answers {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="styles/options.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div style="margin-top: 70px">
+        <div class="textarea-container">
+          <label for="textarea">You can specify additional settings that will be used to generate the response.</label>
+          <textarea id="textarea" placeholder="For example: respond friendly and shortly"></textarea>
+        </div>
+      </div>
+
+      <div class="slider">
+        <label id="number-of-answers" for="fader"></label>
+        <input type="range" min="1" max="4" value="1" id="fader" step="1" list="volsettings" />
+        <datalist id="volsettings">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+        </datalist>
+      </div>
+      <div class="support-container">
+        <p>
+          My extension is currently available for free, but if you find it useful and would like to support our my, i
+          gratefully accept cryptocurrency donations in TON, ETH, and BTC.
+        </p>
+        <ul style="padding-left: 15px">
+          <li><strong>TON:</strong> <code>EQByqfmBYQqho7ITMUYhA1nNjLz5UYo7NRS4IP4n4cOdPuiz</code></li>
+          <li><strong>ETH:</strong> <code>0x846C3387d370f523b9B7F8a6e1789fAAf4ABf64f</code></li>
+          <li><strong>BTC:</strong> <code>bc1q9d4ywqf77xu0psprfn3uecmmc59uupc707wysz</code></li>
+        </ul>
+        <div class="contact">
+          If you have any questions or suggestions, please feel free to contact me at
+          <a href="mailto:n.gromyko99@gmail.com">n.gromyko99@gmail.com</a>
+        </div>
+      </div>
+    </div>
+
+    <script src="options.js"></script>
+  </body>
+</html>
