@@ -1,12 +1,6 @@
 ![Chrome Extension Webpack](https://user-images.githubusercontent.com/21238816/147307879-a3cb179e-3368-412a-88db-284474183884.png)
 Get started with Chrome extensions development using webpack, TypeScript, Sass, and more.
 
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/sszczep)
-
-## Announcements
-
-*Nothing to see here yet.*
-
 ## Features
 
 Chrome Extension Webpack is a simple boilerplate for fast extension development. It helps writing modern TypeScript code with SCSS support. 
@@ -167,35 +161,3 @@ entry: {
   myNewContentScript: './src/myNewContentScript.ts',
 },
 ```
-
-In case of static declaration, you might also need to modify the manifest file.
-
-### Service worker (*old background pages*)
-
-*If you are coming from Manifest V2, you might want to read this page first: [Migrating from background pages to service workers](https://developer.chrome.com/docs/extensions/mv3/migrating_to_service_workers/).*
-
-As per docs:
-
-> Extensions are event-based programs used to modify or enhance the Chrome browsing experience. Events are browser triggers, such as navigating to a new page, removing a bookmark, or closing a tab. Extensions monitor these events using scripts in their background service worker, which then react with specified instructions.
-
-The most common event you will listen to is `chrome.runtime.onInstalled`:
-
-```typescript
-chrome.runtime.onInstalled.addListener(async () => {
-  // Here goes everything you want to execute after extension initialization
-  console.log('Extension successfully installed!');
-});
-```
-
-It is also the perfect (**and the only**) place to create a [context menu](https://developer.chrome.com/docs/extensions/reference/contextMenus/).
-
-You can edit the service worker at `src/serviceWorker.ts`.
-
-Read more about service workers [here](https://developer.chrome.com/docs/extensions/mv3/service_workers/).
-
-## More resources
-
-- [Welcome to Manifest V3](https://developer.chrome.com/docs/extensions/mv3/intro/)
-- [webpack documentation](https://webpack.js.org/concepts/)
-- [The TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
-- [Sass Basics](https://sass-lang.com/guide)
