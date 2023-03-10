@@ -4,9 +4,9 @@ export const PROMT_SETTINGS = 'PROMT_SETTINGS';
 export const ANSWERS_NUMBER_SETTINGS = 'ANSWERS_NUMBER_SETTINGS';
 
 export const TEMPLATE =
-  'The following is business conversation dialogue. Work and career theme. Generate first-person responses. Lets think step by step. Generate respond in a friendly and shortly. {additionalInfo}. Name of the interlocutor: {interlocutorName}';
+  'Business conversation dialogue. Need to generate a new response to answer person on the chat in valid, relevant, friendly and briefly format. Settings: work and career theme, first-person responses, interlocutor name - {interlocutorName}. {additionalInfo}.';
 
-export interface Choice {
+export interface CompletitionResponse {
   message: ChatCompletionResponseMessage;
 }
 

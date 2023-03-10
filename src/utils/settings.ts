@@ -1,7 +1,5 @@
-import { Info } from 'copy-webpack-plugin';
-
-import { ANSWERS_NUMBER_SETTINGS, PROMT_SETTINGS, Settings, TEMPLATE } from './models';
-import { getStorageItem } from './storage';
+import { ANSWERS_NUMBER_SETTINGS, Info, PROMT_SETTINGS, Settings, TEMPLATE } from '../models';
+import { getStorageItem } from '../storage';
 
 export const getSettings = async (info: Info): Promise<Settings> => {
   const model = getAiModel();
@@ -11,7 +9,7 @@ export const getSettings = async (info: Info): Promise<Settings> => {
   const additionalInfo = promt ? `Additional information: ${promt}` : '';
   const formatedPromt = replaceVariablesInString(TEMPLATE, { ...info, additionalInfo });
 
-  return { answersCount, max_tokens: 160, model, promt: formatedPromt };
+  return { answersCount, max_tokens: parseInt(process.env.MAX_TOKENS, 150), model, promt: formatedPromt };
 };
 
 const getAiModel = () => {

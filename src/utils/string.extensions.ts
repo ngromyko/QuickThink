@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 interface String {
   trunc(n: number): string;
 }
