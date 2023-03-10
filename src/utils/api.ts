@@ -24,7 +24,7 @@ export const generateResponse = async (info: Info): Promise<CompletitionResponse
         presence_penalty: 0.5,
       },
       {
-        timeout: 10000,
+        timeout: 15000,
       },
     );
 
