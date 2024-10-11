@@ -16,8 +16,15 @@ export const generateResponse = async (info: Info): Promise<CompletitionResponse
    // console.log('apiKey', apiKey);
 
     if (!apiKey) {
-      alert('API Key is not set');
+      //alert('API Key is not set');
+
+      chrome.runtime.sendMessage("showOptions");
+
+      //chrome.runtime.openOptionsPage();
+
       throw new Error('API Key is not set');
+
+      
     }
 
     const configuration = new Configuration({

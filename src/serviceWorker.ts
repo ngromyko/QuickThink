@@ -44,3 +44,11 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     chrome.runtime.openOptionsPage();
   }
 });
+
+chrome.runtime.onMessage.addListener((request) => {
+  //console.log('request', request);
+  if (request === "showOptions") {
+    chrome.runtime.openOptionsPage();
+    alert('API Key is not set');
+  }
+});
