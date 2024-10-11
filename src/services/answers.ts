@@ -5,10 +5,13 @@ import { generateResponse } from '../utils/api';
 import { extractMessageDataFromList } from './messageForm';
 
 const createAnswersContainer = async () => {
+
+  //console.log('createAnswersContainer');
+
   const messageElement = document.querySelector('.msg-s-message-list-content') as HTMLUListElement;
-  const messageData = extractMessageDataFromList(messageElement).slice(
-    -parseInt(process.env.NUMBER_OF_LASTMESSAGES, 10),
-  );
+  const messageData = extractMessageDataFromList(messageElement);
+
+  //console.log('messageData', messageData);
 
   if (messageData?.length) {
     const captureLocation = currentPathName;

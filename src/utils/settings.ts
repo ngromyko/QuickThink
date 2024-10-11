@@ -1,19 +1,19 @@
-import { ANSWERS_NUMBER_SETTINGS, Info, PROMT_SETTINGS, Settings, TEMPLATE } from '../models';
+import { ANSWERS_NUMBER_SETTINGS, Info, MODEL_SETTINGS, PROMT_SETTINGS, Settings, TEMPLATE } from '../models';
 import { getStorageItem } from '../storage';
 
 export const getSettings = async (info: Info): Promise<Settings> => {
-  const model = getAiModel();
+  const model = await getAiModel();
   const promt = await getStorageItem(PROMT_SETTINGS);
   const answersCount = await getStorageItem(ANSWERS_NUMBER_SETTINGS);
 
   const additionalInfo = promt ? `Additional information: ${promt}` : '';
   const formatedPromt = replaceVariablesInString(TEMPLATE, { ...info, additionalInfo });
 
-  return { answersCount, max_tokens: parseInt(process.env.MAX_TOKENS, 150), model, promt: formatedPromt };
+  return { answersCount, max_tokens: parseInt(process.env.MAX_TOKENS, 1000), model, promt: formatedPromt };
 };
 
-const getAiModel = () => {
-  return 'gpt-3.5-turbo';
+async function getAiModel(){
+  return await getStorageItem(MODEL_SETTINGS);
 };
 
 const replaceVariablesInString = (text: string, args: object): string => {

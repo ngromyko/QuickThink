@@ -26,6 +26,8 @@ const createReplyButton = () => {
 const replyBtnOnclick = async (event: Event) => {
   const cleanButton = document.getElementById('clean-button') as HTMLButtonElement;
 
+//console.log('replyBtnOnclick');
+
   cleanButton.disabled = true;
 
   await onClickReply(event);
@@ -61,6 +63,8 @@ const onClickReply = async (event: Event) => {
     target.disabled = true;
 
     removeAnswersContainer();
+
+  //console.log('onClickReply');
 
     await createAnswersContainer();
 

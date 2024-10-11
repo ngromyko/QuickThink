@@ -21,6 +21,8 @@ export function extractMessageDataFromList(ulElement: HTMLUListElement): Message
 
   const liElements = ulElement.querySelectorAll('li');
 
+  //console.log('liElements', liElements);
+
   liElements.forEach((liElement) => {
     const messageElement = liElement.querySelector('.msg-s-event-listitem');
     if (messageElement) {
@@ -34,6 +36,8 @@ export function extractMessageDataFromList(ulElement: HTMLUListElement): Message
       }
     }
   });
+
+ // console.log('listItems', listItems);
 
   return listItems;
 }
